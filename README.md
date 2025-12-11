@@ -1,63 +1,74 @@
-tried making a custom hal in aosp15 with emulator :)
+# tried making a custom hal in aosp15 with emulator :)
 
-//path of project
-/vendor/dutch/hardware/interfaces/custom_hal/
-dutch - my vendor name
+## path of project
+## /vendor/dutch/hardware/interfaces/custom_hal/
+### dutch - my vendor name
 
 
-
-//build setup
+&nbsp;&nbsp;
+### build setup
+```bash
 source build/envsetup.sh
 lunch sdk_car_x86_64-trunk_staging-userdebug
+```
 
-
-
-//clean the intermediates if some failures happen due to update api
+&nbsp;&nbsp;
+### clean the intermediates if some failures happen due to update api
+```bash
 rm -rf out/soong/.intermediates/vendor/dutch/hardware/interfaces/custom_hal/aidl/com.dutch.heartbeat_interface/
-
-
-//udpate api
+```
+&nbsp;&nbsp;
+### udpate api
+```bash
 m com.dutch.heartbeat-update-api
-
-
-//make 
+```
+&nbsp;&nbsp;
+### make 
+```bash
 m vendor.dutch.heartbeat 
+```
 
-
-
-//check if binary is generated
+&nbsp;&nbsp;
+### check if binary is generated
+```bash
 subin@exlino:~/AOSP15$ ls -l out/target/product/emulator_car64_x86_64/vendor/bin/hw/vendor.dutch.heartbeat
+```
+&nbsp;&nbsp;
 
-
-
-//add the hal binary and sepolicy to device make files inorder to include in the build
-//find the appropriate .mk file of the device you gave in lunch(easisest workaround is grep for the PRODUCT_NAME variable, and paste the contents in the mk file where it matches, eg:sdk_car_x86_64) 
+### add the hal binary and sepolicy to device make files inorder to include in the build
+### find the appropriate .mk file of the device you gave in lunch(easisest workaround is grep for the PRODUCT_NAME variable, and paste the contents in the mk file where it matches, eg:sdk_car_x86_64) 
+```bash
 BOARD_SEPOLICY_DIRS += vendor/dutch/hardware/interfaces/custom_hal/sepolicy
 PRODUCT_PACKAGES += vendor.dutch.heartbeat
-
-
-//make complete img
+```
+&nbsp;&nbsp;
+### make complete img
+```bash
 m
-
-//do a cold boot on emulator
+```
+&nbsp;&nbsp;
+### do a cold boot on emulator
+```bash
 emulator -no-snapshot-load
+```
+&nbsp;&nbsp;
 
-
-
-//start hal
+### start hal
+```bash
 adb root
 adb shell start vendor.dutch.heartbeat
-
-
-// to see if hal is up
+```
+&nbsp;&nbsp;
+### to see if hal is up
+```bash
 adb shell service list | grep heartbeat
+```
+&nbsp;&nbsp;
 
 
-
-
-for the time being it just starts and logs, the impl is not called, so actually functionality is not chechedk, will do that later!!
-//how to verify
-
+## for the time being it just starts and logs, the impl is not called, so actually functionality is not chechedk, will do that later!!
+##how to verify
+```bash
 subin@exlino:~$ adb logcat | grep  -i "dutch"
 12-11 13:17:53.303     0     0 I init    : Parsing file /vendor/etc/init/vendor.dutch.heartbeat.rc...
 12-11 13:18:39.783     0     0 I init    : starting service 'vendor.dutch.heartbeat'...
@@ -66,4 +77,4 @@ subin@exlino:~$ adb logcat | grep  -i "dutch"
 12-11 13:18:39.760  2666  2666 I vendor.dutch.heartbeat: Heartbeat HAL service started: com.dutch.heartbeat.IHeartbeat/default
 12-11 13:18:39.815     0     0 I servicemanager: Caller(pid=2666,uid=1000,sid=u:r:vendor_dutch_heartbeat:s0) Found com.dutch.heartbeat.IHeartbeat/default in device VINTF manifest.
 12-11 13:29:12.952  2681  2681 W service : Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: com.dutch.heartbeat.IHeartbeat/default
-
+```
