@@ -1,16 +1,20 @@
-tried making a custom hal in aosp15 :)
+tried making a custom hal in aosp15 with emulator :)
 
-
+//path of project
 /vendor/dutch/hardware/interfaces/custom_hal/
 dutch - my vendor name
 
+
+
+//build setup
 source build/envsetup.sh
 lunch sdk_car_x86_64-trunk_staging-userdebug
 
 
 
-//clean the intermediates
+//clean the intermediates if some failures happen due to update api
 rm -rf out/soong/.intermediates/vendor/dutch/hardware/interfaces/custom_hal/aidl/com.dutch.heartbeat_interface/
+
 
 //udpate api
 m com.dutch.heartbeat-update-api
@@ -19,8 +23,24 @@ m com.dutch.heartbeat-update-api
 //make 
 m vendor.dutch.heartbeat 
 
-//check if binary is generate
+
+
+//check if binary is generated
 subin@exlino:~/AOSP15$ ls -l out/target/product/emulator_car64_x86_64/vendor/bin/hw/vendor.dutch.heartbeat
+
+
+
+//add the hal binary and sepolicy to device make files inorder to include in the build
+//find the appropriate .mk file of the device you gave in lunch(easisest workaround is grep for the PRODUCT_NAME variable, and paste the contents in the mk file where it matches, eg:sdk_car_x86_64) 
+BOARD_SEPOLICY_DIRS += vendor/dutch/hardware/interfaces/custom_hal/sepolicy
+PRODUCT_PACKAGES += vendor.dutch.heartbeat
+
+
+//make complete img
+m
+
+//do a cold boot on emulator
+emulator -no-snapshot-load
 
 
 
