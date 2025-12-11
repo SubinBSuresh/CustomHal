@@ -1,0 +1,48 @@
+// cc_binary {
+//     name: "vendor.dutch.heartbeat",
+//     relative_install_path: "hw",
+//     vendor: true,
+//     init_rc: ["../vendor.dutch.heartbeat.rc"],
+//     vintf_fragments: ["vendor.dutch.heartbeat.xml"], // You will need to create this XML later for VINTF manifest
+
+//     srcs: [
+//         "HeartbeatImpl.cpp",
+//         "main.cpp",
+//     ],
+
+//     shared_libs: [
+//         "libbase",
+//         "libbinder_ndk",
+//         "libutils",
+//         "com.dutch.heartbeat-V1-ndk",
+//     ],
+// }
+
+
+cc_binary {
+    name: "vendor.dutch.heartbeat",
+    relative_install_path: "hw",
+    vendor: true,
+    
+    // CHANGED: Removed "../" because the file is now local
+    init_rc: ["vendor.dutch.heartbeat.rc"], 
+    
+    // This file now exists locally
+    vintf_fragments: ["vendor.dutch.heartbeat.xml"], 
+
+    srcs: [
+        "HeartbeatImpl.cpp",
+        "main.cpp",
+    ],
+
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libutils",
+        // "com.dutch.heartbeat-ndk",
+        // Ensure this matches the actual output name of your AIDL module
+        // Usually it's name + "-V" + version + "-ndk"
+        "com.dutch.heartbeat-V1-ndk"
+
+    ],
+}

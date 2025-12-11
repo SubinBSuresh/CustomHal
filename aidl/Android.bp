@@ -1,0 +1,20 @@
+aidl_interface {
+    name: "com.dutch.heartbeat",
+    vendor_available: true,
+    srcs: ["com/dutch/heartbeat/*.aidl"],
+    // versions: ["1"],
+    stability: "vintf",
+    owner: "dutch",
+    backend: {
+        cpp: {
+            enabled: false,
+        },
+        java: {
+            enabled: false,
+        },
+        ndk: {
+            enabled: true,
+        },
+    },
+    frozen: false,
+}

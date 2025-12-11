@@ -1,0 +1,10 @@
+type vendor_dutch_heartbeat, domain;
+type vendor_dutch_heartbeat_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(vendor_dutch_heartbeat)
+
+# Allow binder communication
+binder_use(vendor_dutch_heartbeat)
+
+# Allow the HAL to register the service
+add_service(vendor_dutch_heartbeat, vendor_dutch_heartbeat_service)

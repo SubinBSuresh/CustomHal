@@ -1,0 +1,7 @@
+service vendor.dutch.heartbeat /vendor/bin/hw/vendor.dutch.heartbeat
+    class hal
+    user system
+    group system
+    interface aidl com.dutch.heartbeat.IHeartbeat/default
+    oneshot
+    disabled
