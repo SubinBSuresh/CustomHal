@@ -35,11 +35,12 @@ subin@exlino:~/AOSP15$ ls -l out/target/product/emulator_car64_x86_64/vendor/bin
 ```
 &nbsp;&nbsp;
 
-### add the hal binary and sepolicy to device make files inorder to include in the build
+### add the hal binary, sepolicy, compatibility matrix file to device make files inorder to include in the build
 ### find the appropriate .mk file of the device you gave in lunch(easisest workaround is grep for the PRODUCT_NAME variable, and paste the contents in the mk file where it matches, eg:sdk_car_x86_64) 
 ```bash
 BOARD_SEPOLICY_DIRS += vendor/dutch/hardware/interfaces/custom_hal/sepolicy
 PRODUCT_PACKAGES += vendor.dutch.heartbeat
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += vendor/dutch/hardware/interfaces/custom_hal/service/framework_compatibility_matrix.xml
 ```
 &nbsp;&nbsp;
 ### make complete img
